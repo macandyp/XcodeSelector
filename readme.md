@@ -9,7 +9,7 @@ Sometimes you want to have multiple versions of Xcode installed on your machine.
 XcodeSelector is simply a Service that is globally availble that checks for any version of Xcode in your Applications directory, and asks which one you want to work with. It does ask for your system password, but only because `xcode-select` requires root execution. **This workflow does nothing with your password, otherwise**. 
 
 ## Using
-
+![Screenshot](https://github.com/macandyp/XcodeSelector/blob/master/screenshot2.png)
 ![Screenshot](https://github.com/macandyp/XcodeSelector/blob/master/screenshot.png)
 
 ### Contributors
