@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>428</string>
+	<key>AMApplicationVersion</key>
+	<string>2.7</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>Run AppleScript</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>############################################################################################################################################ Created By: James Headrick## Date: 29 Sept 2016#### Description: This utility is will recursively search the /Applications directory for##  files with "Xcode" in the name. It will:##	1. Prompt the user to select a version##	2. Quit running versions of Xcode##	3. Run xcode-select to select the proper toolchain##	4. Open the selected version of Xcode##########################################################################################################################################on run	activate	set itemsFound to getXcodeVersions()	set foundPaths to {}	tell application "System Events"		repeat with itemFound in itemsFound			set foundPath to (path of itemFound as text)			set foundPaths to foundPaths &amp; foundPath		end repeat		activate		set chosenVersion to (choose from list foundPaths with title "Xcode \"Selector\"" with prompt "What's your favorite flavor?" default items "None" OK button name "OK" cancel button name "Cancel")	end tell		if chosenVersion is not false then		quitXcode()		selectXcodeVersion(first item in chosenVersion)	end ifend runon selectXcodeVersion(selectedVersion)	activate	set pathToXcode to quoted form of POSIX path of selectedVersion	try		do shell script "sudo xcode-select -switch " &amp; pathToXcode with administrator privileges		display notification with title "Successfully set Xcode Version" subtitle selectedVersion sound name "Submarine"		startSelectedXcodeVersion(pathToXcode)	on error error_message number error_number		display alert "Failed to set the current version of Xcode" message "Error " &amp; (error_number as text) &amp; ": " &amp; (error_message as text) as critical giving up after 10	end tryend selectXcodeVersionon quitXcode()	try		do shell script "killall Xcode"	end tryend quitXcodeon startSelectedXcodeVersion(selectedVersionPath)	do shell script "open " &amp; selectedVersionPathend startSelectedXcodeVersion####################################################################### Search recursively for Xcode in applications folder####################################################################on getXcodeVersions()	set applicationsDirectory to path to applications folder as alias	# Search  applications directory and subdirectories for Xcode	set xcodeList to recursiveFolderSearch(applicationsDirectory)	return xcodeListend getXcodeVersionson recursiveFolderSearch(currentDirectory)	set xcodeList to searchFolderForXcode(currentDirectory)	tell application "System Events"		set folderNames to name of every folder in currentDirectory	end tell	repeat with currentFolder in folderNames		set newFolderPath to (((currentDirectory as text) &amp; currentFolder &amp; ":") as alias)		#		copy contents of recursiveFolderSearch(newFolderPath) to the end of xcodeList		set xcodeList to xcodeList &amp; recursiveFolderSearch(newFolderPath)	end repeat	return xcodeListend recursiveFolderSearchon searchFolderForXcode(chosenFolder)	tell application "System Events"		set foundJunk to (every file of chosenFolder) whose (name contains "Xcode" and name ends with ".app")		return foundJunk	end tellend searchFolderForXcode####################################################################</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>InputUUID</key>
+				<string>912D6E92-2A17-43A3-9EE0-39DE6D1A04F7</string>
+				<key>Keywords</key>
+				<array>
+					<string>Run</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>F1B8462E-0373-42B7-B5F7-195B0B68D133</string>
+				<key>UUID</key>
+				<string>DF7F53FE-67DE-4F0A-A23B-2057624FCDB6</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>443.500000:316.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict/>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>serviceInputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>serviceOutputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>serviceProcessesInput</key>
+		<integer>0</integer>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.servicesMenu</string>
+	</dict>
+</dict>
+</plist>
